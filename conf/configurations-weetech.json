@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "id": 1,
+            "description": "every cassandra node if metric 1m count greater than 16 and happened continously for 12 times, alert",
+            "enable": "True",
+            "hostFile": "/home/weetech/core/cassandra/conf/list-nodes-cassandra.conf",
+            "script": "loadavg_multi.pl",
+            "metrics": [
+                "1min"
+            ],
+            "exclude_hosts": "None",
+            "value": 16,
+            "operator": ">=",
+            "threshold_operator": ">=",
+            "alert_value": 12,
+            "alert_methods": []
+        }
+    ]
+}
