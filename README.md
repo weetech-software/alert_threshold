@@ -1,3 +1,6 @@
+# what is alert_threshold?
+Active metrics monitoring if the monitored metric exceed a predefined threshold
+
 # how to run this app?
 ```
 $ cd /app/alert_threshold/;
