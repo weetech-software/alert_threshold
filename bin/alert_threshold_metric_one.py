@@ -118,9 +118,9 @@ def create_state_file(stateFile, template='/home/weetech/monitoring/config/prist
         raise
 
 
-def get_check_configuration(url, config='/home/weetech/mointoring/config/configurations.json'):
+def get_check_configuration(url, config='/home/weetech/monitoring/config/configurations.json'):
     """
-    get the check configuration from /home/weetech/mointoring/config/configurations.json,
+    get the check configuration from /home/weetech/monitoring/config/configurations.json,
     return configuration on first found,so url must be unique as it use to make
     comparison
   
