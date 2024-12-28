@@ -1,6 +1,17 @@
 # what is alert_threshold?
 Active metrics monitoring if the monitored metric exceed a predefined threshold
 
+# install python 3.13.0
+This app require python, please install python. Python install script, see https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh
+
+# environment setup
+This application will run using python virtual environment.
+```
+/opt/weetech/python-3.13.0/bin/python3.13 -m venv alert_threshold_env
+source alert_threshold_env/bin/activate
+pip3 install --upgrade pip
+```
+
 # how to run this app?
 ```
 $ cd /app/alert_threshold/;
@@ -17,15 +28,4 @@ $ python alert_threshold_metric.py --log_dir /var/log/monitor
                                    --alert_email_smtp_host localhost
                                    --alert_email_smtp_port 25;
 ```
-
-# install python 3.13.0
-see https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh
-
-# environment setup
-```
-/opt/weetech/python-3.13.0/bin/python3.13 -m venv alert_threshold_env
-source alert_threshold_env/bin/activate
-pip3 install --upgrade pip
-```
-
 
