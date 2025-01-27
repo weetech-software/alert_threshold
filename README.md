@@ -40,8 +40,9 @@ prompt alert, a Jenkins installation is required.
 1. Ensure you have you run this app before as described in the [section](# how to run this app?) how to run this app.
 2. Download and install Jenkins. This is out of topic but you should be able to
 find more information [here](https://www.jenkins.io/download/).
-3. Create a ![Freestyle Project](https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/alert_threshold_jenkins.png) and appropriate settings. The ![minimal required settings](https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/jenkins_alert_threshld_configuration.png):
-are
-3.1 `Build periodically`
-3.2 `Execute Shell`
+4. Create a Freestyle Project and appropriate settings. The minimal required settings are
+  * `Build periodically`
+  * `Execute Shell`
+<img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/alert_threshold_jenkins.png" width="250" width="250" />
+<img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/jenkins_alert_threshld_configuration.png" width="250" width="250" />
 4. That's it, take a look at the console log output for any error.
