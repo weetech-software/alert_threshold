@@ -46,3 +46,9 @@ find more information [here](https://www.jenkins.io/download/).
 <img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/alert_threshold_jenkins.png" width="250" width="250" />
 <img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/jenkins_alert_threshld_configuration.png" width="250" width="250" />
 4. That's it, take a look at the console log output for any error.
+
+I've also created a youtube video here to describe briefly this integration.
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=L9Fhhnr_RiY
+" target="_blank"><img src="http://img.youtube.com/vi/L9Fhhnr_RiY/0.jpg" 
+alt="integration alert_threshold with Jenkins" width="240" height="180" border="10" /></a>
