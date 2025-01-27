@@ -28,6 +28,20 @@ $ python3 alert_threshold_metric.py --log_dir /var/log/monitor
                                     --alert_email_recipient root
                                     --alert_email_from john@gmail.com
                                     --alert_email_smtp_host localhost
-                                    --alert_email_smtp_port 25;
+                                    --alert_email_smtp_port 25
+                                    --alert_telegram_token <my_bot_token>
+                                    --alert_telegram_api_key <my_api_key>
+                                    --alert_telegram_chat_id <my_chat_id>;
 ```
 
+# integration alert_threshold with Jenkins
+In order to run this application periodically so system admin/support can get
+prompt alert, a Jenkins installation is required.
+1. Ensure you have you run this app before as described in the [section](# how to run this app?) how to run this app.
+2. Download and install Jenkins. This is out of topic but you should be able to
+find more information [here](https://www.jenkins.io/download/).
+3. Create a ![Freestyle Project](https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/alert_threshold_jenkins.png) and appropriate settings. The ![minimal required settings](https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/jenkins_alert_threshld_configuration.png):
+are
+3.1 `Build periodically`
+3.2 `Execute Shell`
+4. That's it, take a look at the console log output for any error.
