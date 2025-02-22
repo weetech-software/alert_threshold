@@ -1,10 +1,10 @@
-# what is alert_threshold?
+# What is alert_threshold?
 Active metrics monitoring if the monitored metric exceed a predefined threshold
 
-# install python 3.13.0
+# Install python 3.13.0
 This app require python, please install python. Python install script, see https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh
 
-# environment setup
+# Environment setup
 This application will run using python virtual environment.
 ```
 /opt/weetech/python-3.13.0/bin/python3.13 -m venv alert_threshold_env
@@ -13,7 +13,7 @@ pip3 install --upgrade pip
 pip3 install -r requirements.txt
 ```
 
-# how to run this app?
+# How to run this app?
 assuming alert_threshold install in /app
 ```
 $ cd /app/alert_threshold/;
@@ -34,7 +34,7 @@ $ python3 alert_threshold_metric.py --log_dir /var/log/monitor
                                     --alert_telegram_chat_id <my_chat_id>;
 ```
 
-# integration alert_threshold with Jenkins
+# Integration alert_threshold with Jenkins
 In order to run this application periodically so system admin/support can get
 prompt alert, a Jenkins installation is required.
 1. Ensure you have you run this app before as described in the [section](# how to run this app?) how to run this app.
