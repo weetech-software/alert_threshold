@@ -1,5 +1,5 @@
-# What is alert_threshold?
-Active metrics monitoring if the monitored metric exceed a predefined threshold
+# What is `alert_threshold`?
+Active metrics monitoring triggers an alert if the monitored metric exceeds a predefined threshold.
 
 # Install python 3.13.0
 This app require python, please install python. Python install script, see https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh
