@@ -2,7 +2,7 @@
 Active metrics monitoring triggers an alert if the monitored metric exceeds a predefined threshold.
 
 # Install python 3.13.0
-This app require python, please install python. Python install script, see https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh
+This app requires Python. Please install Python. For the Python install script, see [here](https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh).
 
 # Environment setup
 This application will run using python virtual environment.
