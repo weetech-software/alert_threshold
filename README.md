@@ -5,7 +5,7 @@ Active metrics monitoring triggers an alert if the monitored metric exceeds a pr
 This app requires Python. Please install Python. For the Python install script, see [here](https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh).
 
 # Environment setup
-This application will run using python virtual environment.
+This application will run in a Python virtual environment.
 ```
 /opt/weetech/python-3.13.0/bin/python3.13 -m venv alert_threshold_env
 source alert_threshold_env/bin/activate
