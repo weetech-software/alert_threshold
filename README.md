@@ -14,7 +14,7 @@ pip3 install -r requirements.txt
 ```
 
 # How to run this app?
-assuming alert_threshold install in /app
+This assumes that `alert_threshold` is installed in `/app`.
 ```
 $ cd /app/alert_threshold/;
 $ source alert_threshold_env/bin/activate;
