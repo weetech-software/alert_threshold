@@ -35,18 +35,15 @@ $ python3 alert_threshold_metric.py --log_dir /var/log/monitor
 ```
 
 # Integration alert_threshold with Jenkins
-In order to run this application periodically so system admin/support can get
-prompt alert, a Jenkins installation is required.
-1. Ensure you have you run this app before as described in the [section](# how to run this app?) how to run this app.
-2. Download and install Jenkins. This is out of topic but you should be able to
-find more information [here](https://www.jenkins.io/download/).
-4. Create a Freestyle Project and appropriate settings. The minimal required settings are
+To run this application periodically and ensure system admins/support receive timely alerts, a Jenkins installation is required.
+
+1. Make sure you have already run this app as described in the [How to run this app](#how-to-run-this-app) section.
+2. Download and install Jenkins. While Jenkins setup is outside the scope of this document, more information can be found [here](https://www.jenkins.io/download/).
+3. Create a *Freestyle Project* in Jenkins and apply the appropriate settings. The minimum required settings are:
   * `Build periodically`
   * `Execute Shell`
-<img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/alert_threshold_jenkins.png" width="250" width="250" />
-<img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/jenkins_alert_threshld_configuration.png" width="250" width="250" />
-4. That's it! Take a look at the console log output for any errors. I've also created a YouTube video here to briefly describe this integration
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=L9Fhhnr_RiY
-" target="_blank"><img src="http://img.youtube.com/vi/L9Fhhnr_RiY/0.jpg" 
-alt="integration alert_threshold with Jenkins" width="240" height="180" border="10" /></a>
+  <img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/alert_threshold_jenkins.png" width="250" />
+  <img src="https://raw.githubusercontent.com/weetech-software/alert_threshold/refs/heads/main/docs/assets/jenkins_alert_threshld_configuration.png" width="250" />
+4. That’s it! Check the console output for any errors. A YouTube video has also been created to briefly demonstrate this integration:
+  <a href="http://www.youtube.com/watch?feature=player_embedded&v=L9Fhhnr_RiY" target="_blank"><img src="http://img.youtube.com/vi/L9Fhhnr_RiY/0.jpg" alt="Integration of alert_threshold with Jenkins" width="240" height="180" border="10" /></a>
