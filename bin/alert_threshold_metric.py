@@ -1,6 +1,6 @@
 #
 # 
-# check metric count in statefile if count exceed predefined threshold
+# Check the metric count in statefile; if count exceeds the predefined threshold.
 #
 #
 
