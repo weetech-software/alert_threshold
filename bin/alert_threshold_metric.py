@@ -4,10 +4,10 @@
 #
 #
 
-# this script is executed by http://jenkins.weetech.ch:8080/
-# job execution once every 5minutes
-# this script max time is 4minute
-# each individual script max time 1minute
+# This script is executed by http://jenkins.weetech.ch:8080/ .
+# The job runs every 5 minutes.
+# The maximum runtime for this script is 4 minutes.
+# The maximum runtime for each individual script is 1 minute.
 
 import json
 import glob
