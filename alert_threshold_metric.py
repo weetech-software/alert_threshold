@@ -6,13 +6,12 @@ import sys
 import time
 import threading
 
-import config as parsed_config
-
 from concurrent import futures
-from logging.handlers import TimedRotatingFileHandler
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from alert_threshold_metric_one import check1 as threshold_check
+from logging.handlers import TimedRotatingFileHandler
 
+from alert_threshold_metric_one import check1 as threshold_check
+import config as parsed_config
 
 
 def setup_logging(log_file):
@@ -33,7 +32,6 @@ def setup_logging(log_file):
     logger = logging.getLogger(__name__)
     logger.info("logger initialized")
     return logger
-
 
 def read_parse_config(logger, config_file):
     configs = {}
@@ -91,7 +89,17 @@ def read_parse_config(logger, config_file):
                 logger.info('excluding ' + host)
                 continue
 
-            c = parsed_config.Config(config['description'], config['enable'], config['script'], config['metrics'], config['exclude_hosts'], config['value'], config['operator'], config['threshold_operator'], config['alert_value'], config['alert_methods'])
+            c = parsed_config.Config(config['description'],
+                                     config['enable'],
+                                     config['script'],
+                                     config['metrics'],
+                                     config['exclude_hosts'] if config['exclude_hosts'] != "None" else [],
+                                     config['value'],
+                                     config['operator'],
+                                     config['threshold_operator'],
+                                     config['alert_value'],
+                                     config['alert_methods']
+                                    )
             #c.add_metric(config['metric'])
             if host in configs:
                 configs[host].append(c);
@@ -102,9 +110,8 @@ def read_parse_config(logger, config_file):
     #for config in configs:
     #    logger.info(config)
 
-    #logger.info(configs)
+    logger.info(configs)
     return True, configs
-
 
 def start_check(logger, configs, arguments):
     logger.info('start checking ')
@@ -148,12 +155,6 @@ def start_check(logger, configs, arguments):
 def parse_argument():
     parser = argparse.ArgumentParser(description='app to alert if threshold is reached')
 
-    # Required positional argument
-    # parser.add_argument('pos_arg', type=int, help='A required integer positional argument')
-
-    # Optional positional argument
-    # parser.add_argument('opt_pos_arg', type=int, nargs='?', help='An optional integer positional argument')
-
     # Optional argument 
     parser.add_argument('--log_dir', help='log directory', default='log')
     parser.add_argument('--check_config_dir', help='directory that contains check configuration', default='conf')
@@ -174,9 +175,6 @@ def parse_argument():
     parser.add_argument('--alert_telegram_api_key', help='telegram api key')
     parser.add_argument('--alert_telegram_chat_id', help='telegram chat id')
 
-    # Switch
-    #parser.add_argument('--switch', action='store_true', help='A boolean switch')
-
     return parser.parse_args()
 
 def config_sanity_checks(args):
@@ -191,7 +189,6 @@ def config_sanity_checks(args):
         return False
 
     return True
-
 
 def main():
     args = parse_argument()
