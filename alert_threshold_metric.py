@@ -89,22 +89,20 @@ def read_parse_config(logger, config_file):
                 logger.info('excluding ' + host)
                 continue
 
-            c = parsed_config.Config(config['description'],
-                                     config['enable'],
-                                     config['script'],
-                                     config['metrics'],
-                                     config['exclude_hosts'] if config['exclude_hosts'] != "None" else [],
-                                     config['value'],
-                                     config['operator'],
-                                     config['threshold_operator'],
-                                     config['alert_value'],
-                                     config['alert_methods']
-                                    )
+            c = parsed_config.Config(
+                config['description'],
+                config['enable'],
+                config['script'],
+                config['metrics'],
+                config['exclude_hosts'] if config['exclude_hosts'] != "None" else [],
+                config['value'],
+                config['operator'],
+                config['threshold_operator'],
+                config['alert_value'],
+                config['alert_methods']
+            )
             #c.add_metric(config['metric'])
-            if host in configs:
-                configs[host].append(c);
-            else:
-                configs[host] = [c]
+            configs.setdefault(host, []).append(c)
 
     # TODO remove duplicate config
     #for config in configs:
