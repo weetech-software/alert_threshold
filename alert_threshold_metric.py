@@ -14,68 +14,71 @@ from alert_threshold_metric_one import check1 as threshold_check
 import config as parsed_config
 
 
-def setup_logging(log_file):
+def setup_logging(log_file: str) -> logging.Logger:
     rootLogger = logging.getLogger()
-    rootLogger.setLevel(logging.INFO)
+    rootLogger.setLevel(level=logging.INFO)
 
-    fh = TimedRotatingFileHandler(log_file, when="midnight", interval=1, backupCount=10)
-    sh = logging.StreamHandler(sys.stdout)
+    fh = TimedRotatingFileHandler(filename=log_file, when="midnight", interval=1, backupCount=10)
+    sh = logging.StreamHandler(stream=sys.stdout)
 
-    formatter = logging.Formatter('%(asctime)s %(name)-12s [%(threadName)-12.12s] [%(levelname)-5.5s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
-    fh.setFormatter(formatter)
-    formatter = logging.Formatter('%(asctime)s %(name)-12s: %(levelname)-5.5s %(message)s')
-    sh.setFormatter(formatter)
+    formatter = logging.Formatter(fmt='%(asctime)s %(name)-12s [%(threadName)-12.12s] [%(levelname)-5.5s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    fh.setFormatter(fmt=formatter)
+    formatter = logging.Formatter(fmt='%(asctime)s %(name)-12s: %(levelname)-5.5s %(message)s')
+    sh.setFormatter(fmt=formatter)
 
-    rootLogger.addHandler(fh)
-    rootLogger.addHandler(sh)
+    rootLogger.addHandler(hdlr=fh)
+    rootLogger.addHandler(hdlr=sh)
 
-    logger = logging.getLogger(__name__)
-    logger.info("logger initialized")
+    logger = logging.getLogger(name=__name__)
+    logger.info(msg="logger initialized")
     return logger
 
-def read_parse_config(logger, config_file):
+def read_parse_config(
+    logger: logging.Logger,
+    config_file: str
+) -> tuple[bool, dict[str, parsed_config.Config]]:
     configs = {}
 
     try:
-        with open(config_file) as f:
-            config_json = json.load(f)
+        with open(file=config_file) as f:
+            config_json = json.load(fp=f)
     except:
-        logger.error('invalid json detected in config')
+        logger.error(msg='invalid json detected in config')
         return False, None
 
     if config_json == None or 'configurations' not in config_json:
-        logger.error('invalid configuration file')
+        logger.error(msg='invalid configuration file')
         return False, None
 
     for config in config_json['configurations']:
         #print config
         if 'host' not in config and 'hostFile' not in config:
-            logger.error('invalid config, host or hostFile not found')
+            logger.error(msg='invalid config, host or hostFile not found')
             return False, None
         if 'metrics' not in config:
-            logger.error('invalid config, metrics not found')
+            logger.error(msg='invalid config, metrics not found')
             return False, None
         if 'script' not in config:
-            logger.error('invalid config, script not found')
+            logger.error(msg='invalid config, script not found')
             return False, None
         if 'value' not in config:
-            logger.error('invalid config, value not found')
+            logger.error(msg='invalid config, value not found')
             return False, None
         if 'operator' not in config:
-            logger.error('invalid config, operator not found')
+            logger.error(msg='invalid config, operator not found')
             return False, None
         if 'threshold_operator' not in config:
-            logger.error('invalid config, threshold_operator not found')
+            logger.error(msg='invalid config, threshold_operator not found')
             return False, None
         if 'alert_value' not in config:
-            logger.error('invalid config, alert_value not found')
+            logger.error(msg='invalid config, alert_value not found')
             return False, None
 
         hosts = []
         if 'host' in config:
             hosts.append(config['host'])
         elif 'hostFile' in config:
-            with open(config['hostFile']) as f:
+            with open(file=config['hostFile']) as f:
                 for line in f:
                     if line.startswith('#'):
                         continue
@@ -86,33 +89,37 @@ def read_parse_config(logger, config_file):
                 continue
 
             if config['exclude_hosts'] and host in config['exclude_hosts']:
-                logger.info('excluding ' + host)
+                logger.info(msg='excluding ' + host)
                 continue
 
             c = parsed_config.Config(
-                config['description'],
-                config['enable'],
-                config['script'],
-                config['metrics'],
-                config['exclude_hosts'] if config['exclude_hosts'] != "None" else [],
-                config['value'],
-                config['operator'],
-                config['threshold_operator'],
-                config['alert_value'],
-                config['alert_methods']
+                description=config['description'],
+                enable=config['enable'],
+                script=config['script'],
+                metrics=config['metrics'],
+                exclude_hosts=config['exclude_hosts'] if config['exclude_hosts'] != "None" else [],
+                value=config['value'],
+                operator=config['operator'],
+                threshold_operator=config['threshold_operator'],
+                alert_value=config['alert_value'],
+                alert_methods=config['alert_methods']
             )
-            #c.add_metric(config['metric'])
+            # if host exists in configs, append c to list, else create a new list with c as the first item
             configs.setdefault(host, []).append(c)
 
     # TODO remove duplicate config
     #for config in configs:
     #    logger.info(config)
 
-    logger.info(configs)
+    logger.info(msg=configs)
     return True, configs
 
-def start_check(logger, configs, arguments):
-    logger.info('start checking ')
+def start_check(
+    logger: logging.Logger,
+    configs: dict[str, parsed_config.Config],
+    arguments: argparse.Namespace
+) -> None:
+    logger.info(msg='start checking')
 
     # this one start one by one
     """
@@ -140,17 +147,22 @@ def start_check(logger, configs, arguments):
 
     # this one fire all , the timeout is the executor timeout
     with futures.ThreadPoolExecutor(max_workers=32) as ex:
-        args = ((config, hostname, arguments, 120) for hostname, config in configs.items())
-        results = ex.map(lambda p: threshold_check(*p), args, timeout=270)
+        args = ({
+            'check_config': config,
+            'ssh_host': hostname,
+            'arguments': arguments,
+            'ops_timeout': 120
+        } for hostname, config in configs.items())
+        results = ex.map(lambda kwargs: threshold_check(**kwargs), args, timeout=270)
         outputs = []
         try:
             for i in results:
                 outputs.append(i)
         except futures._base.TimeoutError:
-            logger.error('main thread timeout')
-    logger.info(outputs)
+            logger.error(msg='main thread timeout')
+    logger.info(msg=outputs)
 
-def parse_argument():
+def parse_argument() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='app to alert if threshold is reached')
 
     # Optional argument 
@@ -175,35 +187,41 @@ def parse_argument():
 
     return parser.parse_args()
 
-def config_sanity_checks(args):
-    if not os.path.exists(args.log_dir):
-        os.makedirs(args.log_dir)
+def config_sanity_checks(args: argparse.Namespace) -> bool:
+    if not os.path.exists(path=args.log_dir):
+        os.makedirs(name=args.log_dir)
 
-    if not os.path.exists(args.state_file_dir):
-        os.makedirs(args.state_file_dir)
+    if not os.path.exists(path=args.state_file_dir):
+        os.makedirs(name=args.state_file_dir)
 
-    if not os.path.isfile(args.check_config_dir + '/configurations.json'):
-        sys.stderr.write('expected check config file {0} not exists \n'.format(args.check_config_dir + '/configurations.json'))
+    config_file = args.check_config_dir + '/configurations.json'
+    if not os.path.isfile(path=config_file):
+        sys.stderr.write(
+            f"expected check config file {config_file} not exists\n"
+        )
         return False
 
     return True
 
-def main():
+def main() -> None:
     args = parse_argument()
 
-    if not config_sanity_checks(args):
-        sys.exit(1)
+    if not config_sanity_checks(args=args):
+        sys.exit(status=1)
 
     # setup logging
-    logger = setup_logging(args.log_dir + '/alert_threshold.log')
+    logger = setup_logging(log_file=f"{args.log_dir}/alert_threshold.log")
 
     # read configuration file and then rearrange configuration object
-    is_read_parse_config_ok, configs = read_parse_config(logger, args.check_config_dir + '/configurations.json')
+    is_read_parse_config_ok, configs = read_parse_config(
+        logger=logger,
+        config_file=f"{args.check_config_dir}/configurations.json"
+    )
     if not is_read_parse_config_ok:
-        sys.exit(1)
+        sys.exit(status=1)
 
     # start executor
-    start_check(logger, configs, args)
+    start_check(logger=logger, configs=configs, arguments=args)
 
 if __name__ == "__main__":
     main()
