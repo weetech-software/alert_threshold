@@ -3,11 +3,8 @@ import json
 import logging
 import os
 import sys
-import time
-import threading
 
 from concurrent import futures
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from logging.handlers import TimedRotatingFileHandler
 
 from alert_threshold_metric_one import check1 as threshold_check
@@ -123,6 +120,8 @@ def start_check(
 
     # this one start one by one
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    import time
     executor = ThreadPoolExecutor(max_workers=50)
     for hostname,metrics in configs.items():
         logger.info(hostname)
@@ -138,6 +137,7 @@ def start_check(
 
     # this start in mulitple of max 10 threads
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     with ThreadPoolExecutor(max_workers=8) as executor:
         futures = [executor.submit(task, logger, hostname, metrics) for hostname,metrics in configs.items()]
 
