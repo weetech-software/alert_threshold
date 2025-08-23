@@ -144,16 +144,20 @@ def start_check(
     for future in as_completed(futures, timeout=1):
         logger.info(future.result(timeout=1))
     """
-
+    # 2minutes
+    operation_timeout = 120
+    # 4minutes 30secs
+    script_timeout = 270
+    MAX_WORKERS = 32
     # this one fire all , the timeout is the executor timeout
-    with futures.ThreadPoolExecutor(max_workers=32) as ex:
+    with futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         args = ({
             'check_config': config,
             'ssh_host': hostname,
             'arguments': arguments,
-            'ops_timeout': 120
+            'ops_timeout': operation_timeout,
         } for hostname, config in configs.items())
-        results = ex.map(lambda kwargs: threshold_check(**kwargs), args, timeout=270)
+        results = ex.map(lambda kwargs: threshold_check(**kwargs), args, timeout=script_timeout)
         outputs = []
         try:
             for i in results:
