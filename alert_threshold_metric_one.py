@@ -9,7 +9,6 @@ import os.path
 import smtplib
 import subprocess
 import sys
-import traceback
 import threading
 
 from email.mime.text import MIMEText
