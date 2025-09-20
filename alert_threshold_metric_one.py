@@ -2,16 +2,17 @@
 import datetime
 import email.utils
 import logging
-import requests
 import json
 import operator
 import os.path
+import requests
 import smtplib
 import subprocess
 import sys
 import threading
 
 from email.mime.text import MIMEText
+from argparse import Namespace
 
 
 logger = logging.getLogger(__name__)
@@ -19,25 +20,25 @@ logger = logging.getLogger(__name__)
 
 # subprocess with thread, so we have timeout and this work in python2 and python3
 class Command(object):
-    def __init__(self, cmd, res, arguments):
+    def __init__(self, cmd: str, res: list, arguments: Namespace):
         self.cmd = cmd
         self.res = res
         self.arguments = arguments
         self.process = None
 
-    def run(self, timeout):
+    def run(self, timeout: float | None):
         def target(res):
-            self.process = subprocess.Popen(self.cmd,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            self.process = subprocess.Popen(self.cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             stdout, stderr = self.process.communicate()
             res[0] = stdout
             if stderr:
                 logger.error("error is %s", stderr)
-                alert_root("mon script error", str(stderr) + "\n" + self.cmd + "\n" + str(stdout), self.arguments)
+                alert_root("mon script error", f"{stderr}\n{self.cmd}\n{stdout}", self.arguments)
 
         thread = threading.Thread(target=target, args=(self.res,))
         thread.start()
 
-        thread.join(timeout)
+        thread.join(timeout=timeout)
         if thread.is_alive():
             self.process.terminate()
             thread.join()
