@@ -20,14 +20,14 @@ logger = logging.getLogger(__name__)
 
 # subprocess with thread, so we have timeout and this work in python2 and python3
 class Command(object):
-    def __init__(self, cmd: str, res: list, arguments: Namespace):
+    def __init__(self, cmd: str, res: list[bytes], arguments: Namespace):
         self.cmd = cmd
         self.res = res
         self.arguments = arguments
-        self.process = None
+        self.process: subprocess.Popen[bytes] | None = None
 
     def run(self, timeout: float | None):
-        def target(res):
+        def target(res: list[bytes]):
             self.process = subprocess.Popen(self.cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             stdout, stderr = self.process.communicate()
             res[0] = stdout
@@ -40,7 +40,8 @@ class Command(object):
 
         thread.join(timeout=timeout)
         if thread.is_alive():
-            self.process.terminate()
+            if self.process is not None:
+                self.process.terminate()
             thread.join()
         #print self.process.returncode
 
