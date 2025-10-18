@@ -64,10 +64,9 @@ def update_state_file(stateFile, key, value):
             data[key] = value
             json.dump(data, f, indent=3, sort_keys=True)
             f.write("\n")
-    except:
+    except Exception as e:
         logger.exception('unable to read or write file %s', stateFile)
-        # py2 does not allow message in raising new error
-        raise
+        raise e
         
 
 def get_current_value(stateFile, key):
