@@ -46,7 +46,7 @@ class Command(object):
         #print self.process.returncode
 
 
-def update_state_file(stateFile, key, value):
+def update_state_file(stateFile: str, key: str, value: str) -> None:
     """
     update the stateFile based on the key and value specified
 
@@ -57,10 +57,10 @@ def update_state_file(stateFile, key, value):
 
     """
     try:
-        with open(stateFile, 'r') as f:
+        with open(stateFile, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-        with open(stateFile, 'w') as f:
+        with open(stateFile, 'w', encoding='utf-8') as f:
             data[key] = value
             json.dump(data, f, indent=3, sort_keys=True)
             f.write("\n")
