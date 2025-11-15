@@ -64,12 +64,12 @@ def update_state_file(stateFile: str, key: str, value: str) -> None:
             data[key] = value
             json.dump(data, f, indent=3, sort_keys=True)
             f.write("\n")
-    except Exception as e:
-        logger.exception('unable to read or write file %s', stateFile)
-        raise e
+    except Exception:
+        logger.exception(f"unable to read or write file {stateFile}")
+        raise
         
 
-def get_current_value(stateFile, key):
+def get_current_value(stateFile: str, key: str) -> int:
     """
     return the value associated with the key in the specified stateFile
 
@@ -77,20 +77,21 @@ def get_current_value(stateFile, key):
     :param key: the key where the value is associated with
     :returns: 0 if there is not key found in the stateFile. else return the 
               value associated with the key
-
+    :raises:
+        JSONDecodeError: If file contains invalid JSON
+        OSError: If file cannot be read
     """
     try:
         count = 0
-        with open(stateFile, 'r') as f:
+        with open(stateFile, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
             if key not in data:
                 return count
             count = data[key]
         return count
-    except:
-        logger.exception('unable to read file %s', stateFile)
-        # py2 does not allow message in raising new error
+    except (OSError, json.JSONDecodeError):
+        logger.exception(f"unable to read file {stateFile}")
         raise
 
 
