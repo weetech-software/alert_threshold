@@ -95,7 +95,7 @@ def get_current_value(stateFile: str, key: str) -> int:
         raise
 
 
-def create_state_file(stateFile, template='conf/pristine.json'):
+def create_state_file(stateFile: str, template: str='conf/pristine.json') -> None:
     """
     automatically create state file if it does not found in the directory temp/
 
@@ -105,14 +105,15 @@ def create_state_file(stateFile, template='conf/pristine.json'):
 
     """
     try:
-        with open(template, 'r') as f:
+        with open(template, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
-            with open(stateFile, 'w') as sf:
+            with open(stateFile, 'w', encoding='utf-8') as sf:
                 json.dump(data, sf, indent=3, sort_keys=True)
+                sf.flush()
                 sf.write("\n")
     except:
-        logger.exception('unable to read file %s or write file %s', template, stateFile)
+        logger.exception(f"unable to read file {template} or write file {stateFile}")
         raise
 
 ops = {
