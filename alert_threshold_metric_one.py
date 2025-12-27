@@ -13,6 +13,7 @@ import threading
 
 from email.mime.text import MIMEText
 from argparse import Namespace
+from typing import Callable, TypeVar
 
 
 logger = logging.getLogger(__name__)
@@ -125,8 +126,11 @@ ops = {
     '>': operator.gt
 }
 
-def cmp(arg1, op, arg2):
-    operation = ops.get(op)
+T = TypeVar('T')
+def cmp(arg1: T, op: str, arg2: T) -> bool:
+    operation: Callable[[T, T], bool] = ops.get(op)
+    if operation is None:
+        raise ValueError(f"Invalid operator: {op}. Must be one of {list(ops.keys())}")
     return operation(arg1, arg2)
 
 def alert_root(email_subject, message, arguments):
