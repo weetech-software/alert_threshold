@@ -133,11 +133,12 @@ def cmp(arg1: T, op: str, arg2: T) -> bool:
         raise ValueError(f"Invalid operator: {op}. Must be one of {list(ops.keys())}")
     return operation(arg1, arg2)
 
-def alert_root(email_subject, message, arguments):
-    msg = MIMEText(message)
+def alert_root(email_subject: str, message: str, arguments: Namespace) -> None:
+    msg = MIMEText(message, 'plain', 'utf-8')
     msg['To'] = email.utils.formataddr(('monitoring', arguments.alert_email_recipient))
     msg['From'] = email.utils.formataddr(('SMTPD', arguments.alert_email_from))
     msg['Subject'] = email_subject
+    msg['Date'] = email.utils.formatdate()
 
     server = smtplib.SMTP(arguments.alert_email_smtp_host, arguments.alert_email_smtp_port)
     #server.set_debuglevel(True)
