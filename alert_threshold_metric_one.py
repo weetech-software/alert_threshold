@@ -147,11 +147,12 @@ def alert_root(email_subject: str, message: str, arguments: Namespace) -> None:
     finally:
         server.quit()
 
-def alert_email(email_subject, message, arguments, recipients):
-    msg = MIMEText(message)
+def alert_email(email_subject: str, message: str, arguments: Namespace, recipients: list[str]):
+    msg = MIMEText(message, 'plain', 'utf-8')
     msg['To'] = ', '.join(recipients)
     msg['From'] = email.utils.formataddr(('SMTPD', arguments.alert_email_from))
     msg['Subject'] = email_subject
+    msg['Date'] = email.utils.formatdate()
 
     server = smtplib.SMTP(arguments.alert_email_smtp_host, arguments.alert_email_smtp_port)
     #server.set_debuglevel(True)
