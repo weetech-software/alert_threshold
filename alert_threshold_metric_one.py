@@ -161,7 +161,7 @@ def alert_email(email_subject: str, message: str, arguments: Namespace, recipien
     finally:
         server.quit()
 
-def alert_telegram(subject, message, arguments):
+def alert_telegram(subject: str, message: str, arguments: Namespace):
     payload = {'chat_id': arguments.alert_telegram_chat_id, 'text': subject + "\n\n" + message}
     url = 'https://api.telegram.org/{0}:{1}/sendMessage'.format(arguments.alert_telegram_token, arguments.alert_telegram_api_key)
     requests.get(url, params=payload)
