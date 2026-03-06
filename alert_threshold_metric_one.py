@@ -14,6 +14,7 @@ import threading
 from email.mime.text import MIMEText
 from argparse import Namespace
 from typing import Callable, TypeVar
+import config as parsed_config
 
 
 logger = logging.getLogger(__name__)
@@ -173,7 +174,7 @@ def alert(alert_configs: list[dict], subject: str, content: str, arguments: Name
         if alert_config['type'] == 'telegram':
             alert_telegram(subject, content, arguments)
 
-def check1(check_config, ssh_host, arguments, ops_timeout=60):
+def check1(check_config: list[parsed_config.Config], ssh_host: str, arguments: Namespace, ops_timeout: int = 60) -> str:
     #logger.info("hi, this is check1 " + ssh_host + " " + str(check_config));
     stateFile='{0}/{1}-alert-threshold.json'.format(arguments.state_file_dir, ssh_host.replace('.', '-'))
 
