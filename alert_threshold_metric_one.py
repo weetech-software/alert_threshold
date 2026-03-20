@@ -245,12 +245,3 @@ def check1(check_config: list[parsed_config.Config], ssh_host: str, arguments: N
                 pass
 
     return threading.current_thread().name + ": done"
-
-if __name__ == '__main__':
-    logging.basicConfig(
-      level=logging.INFO,
-      format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-      stream=sys.stdout,
-    )
-
-    logger.info('see unit test for usage')
