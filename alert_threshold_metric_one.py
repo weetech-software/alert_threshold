@@ -8,7 +8,6 @@ import os.path
 import requests
 import smtplib
 import subprocess
-import sys
 import threading
 
 from email.mime.text import MIMEText
@@ -244,4 +243,4 @@ def check1(check_config: list[parsed_config.Config], ssh_host: str, arguments: N
             else:
                 pass
 
-    return threading.current_thread().name + ": done"
+    return f"{threading.current_thread().name} : done"
