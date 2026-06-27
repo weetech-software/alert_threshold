@@ -18,8 +18,8 @@ import signal
 import sys
 import time
 import zipfile
-from threading import Thread
 
+from threading import Thread
 
 #from timed_compressed_rotating_file_handler import TimedCompressedRotatingFileHandler, TimedCompressedRotatingFileHandler1
 from logging.handlers import TimedRotatingFileHandler

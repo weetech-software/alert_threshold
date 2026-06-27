@@ -1,5 +1,5 @@
 class Config:
-    def __init__(self, description, enable, script, metrics, exclude_hosts, value, operator, threshold_operator, alert_value, alert_methods):
+    def __init__(self, description: str, enable: bool, script: str, metrics: list[str], exclude_hosts: list[str], value: float, operator: str, threshold_operator: str, alert_value: int, alert_methods: list[str]) -> None:
         self.description = description
         self.enable = enable
         self.script = script
@@ -11,9 +11,14 @@ class Config:
         self.alert_value = alert_value
         self.alert_methods = alert_methods
 
-    def __str__(self):
-        return "description: %s, enable: %s, script : %s, metrics: [%s], exclude_hosts: [%s], value: %s, operator: %s, threshold_operator: %s, alert_value: %s" % (self.description, self.enable, self.script, ",".join(self.metrics), ",".join(self.exclude_hosts), self.value, self.operator, self.threshold_operator, self.alert_value)
+    def __str__(self) -> str:
+        return (
+            f"description: {self.description}, enable: {self.enable}, script: {self.script}, "
+            f"metrics: [{','.join(self.metrics)}], exclude_hosts: [{','.join(self.exclude_hosts)}], "
+            f"value: {self.value}, operator: {self.operator}, threshold_operator: {self.threshold_operator}, "
+            f"alert_value: {self.alert_value}"
+        )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
