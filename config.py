@@ -16,7 +16,7 @@ class Config:
             f"description: {self.description}, enable: {self.enable}, script: {self.script}, "
             f"metrics: [{','.join(self.metrics)}], exclude_hosts: [{','.join(self.exclude_hosts)}], "
             f"value: {self.value}, operator: {self.operator}, threshold_operator: {self.threshold_operator}, "
-            f"alert_value: {self.alert_value}"
+            f"alert_value: {self.alert_value}, alert_methods: [{','.join(self.alert_methods)}]"
         )
 
     def __repr__(self) -> str:
