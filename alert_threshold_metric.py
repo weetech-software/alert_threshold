@@ -91,7 +91,7 @@ def read_parse_config(
 
             c = parsed_config.Config(
                 description=config['description'],
-                enable=config['enable'],
+                enable=config['enable'] == 'True',
                 script=config['script'],
                 metrics=config['metrics'],
                 exclude_hosts=config['exclude_hosts'] if config['exclude_hosts'] != "None" else [],
