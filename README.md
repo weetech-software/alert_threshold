@@ -1,13 +1,13 @@
 # What is `alert_threshold`?
 Active metrics monitoring triggers an alert if the monitored metric exceeds a predefined threshold.
 
-# Install python 3.13.0
+# Install python 3.14.0
 This app requires Python. Please install Python. For the Python install script, see [here](https://github.com/jasonwee/videoOnCloud/blob/master/core/install_software/python/python_3-13-0.sh).
 
 # Environment setup
 This application will run in a Python virtual environment.
 ```
-/opt/weetech/python-3.13.0/bin/python3.13 -m venv alert_threshold_env
+/opt/weetech/python-3.14.0/bin/python3.14 -m venv alert_threshold_env
 source alert_threshold_env/bin/activate
 pip3 install --upgrade pip
 pip3 install -r requirements.txt
