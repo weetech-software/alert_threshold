@@ -33,7 +33,7 @@ def setup_logging(log_file: str) -> logging.Logger:
 def read_parse_config(
     logger: logging.Logger,
     config_file: str
-) -> tuple[bool, dict[str, parsed_config.Config]]:
+) -> tuple[bool, dict[str, parsed_config.Config] | None]:
     configs = {}
 
     try:
@@ -69,6 +69,18 @@ def read_parse_config(
             return False, None
         if 'alert_value' not in config:
             logger.error(msg='invalid config, alert_value not found')
+            return False, None
+        if 'description' not in config:
+            logger.error(msg='invalid config, description not found')
+            return False, None
+        if 'enable' not in config:
+            logger.error(msg='invalid config, enable not found')
+            return False, None
+        if 'exclude_hosts' not in config:
+            logger.error(msg='invalid config, exclude_hosts not found')
+            return False, None
+        if 'alert_methods' not in config:
+            logger.error(msg='invalid config, alert_methods not found')
             return False, None
 
         hosts = []
@@ -113,7 +125,7 @@ def read_parse_config(
 
 def start_check(
     logger: logging.Logger,
-    configs: dict[str, parsed_config.Config],
+    configs: dict[str, list[parsed_config.Config]],
     arguments: argparse.Namespace
 ) -> None:
     logger.info(msg='start checking')
