@@ -83,6 +83,21 @@ def read_parse_config(
             logger.error(msg='invalid config, alert_methods not found')
             return False, None
 
+        # further checks for the config
+        if config['enable'] not in ('True', 'False'):
+            logger.error(msg='invalid config, enable must be "True" or "False"')
+            return False, None
+        exclude = config['exclude_hosts']
+        if exclude != "None" and not isinstance(exclude, list):
+            logger.error(msg='invalid config, exclude_hosts must be "None" or a list')
+            return False, None
+        if not isinstance(config['alert_methods'], list):
+            logger.error(msg='invalid config, alert_methods must be a list')
+            return False, None
+        if not isinstance(config['description'], str) or not config['description'].strip():
+            logger.error(msg='invalid config, description must be a non-empty string')
+            return False, None
+
         hosts = []
         if 'host' in config:
             hosts.append(config['host'])
@@ -164,11 +179,11 @@ def start_check(
     # this one fire all , the timeout is the executor timeout
     with futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
         args = ({
-            'check_config': config,
+            'check_config': check_configs,
             'ssh_host': hostname,
             'arguments': arguments,
             'ops_timeout': operation_timeout,
-        } for hostname, config in configs.items())
+        } for hostname, check_configs in configs.items())
         results = ex.map(lambda kwargs: threshold_check(**kwargs), args, timeout=script_timeout)
         outputs = []
         try:
