@@ -33,7 +33,7 @@ def setup_logging(log_file: str) -> logging.Logger:
 def read_parse_config(
     logger: logging.Logger,
     config_file: str
-) -> tuple[bool, dict[str, parsed_config.Config] | None]:
+) -> tuple[bool, dict[str, list[parsed_config.Config]] | None]:
     configs = {}
 
     try:
@@ -43,7 +43,7 @@ def read_parse_config(
         logger.error(msg='invalid json detected in config')
         return False, None
 
-    if config_json == None or 'configurations' not in config_json:
+    if config_json is None or 'configurations' not in config_json:
         logger.error(msg='invalid configuration file')
         return False, None
 
