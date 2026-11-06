@@ -189,7 +189,7 @@ def start_check(
         try:
             for i in results:
                 outputs.append(i)
-        except futures._base.TimeoutError:
+        except futures.TimeoutError:
             logger.error(msg='main thread timeout')
     logger.info(msg=outputs)
 
@@ -225,7 +225,7 @@ def config_sanity_checks(args: argparse.Namespace) -> bool:
     if not os.path.exists(path=args.state_file_dir):
         os.makedirs(name=args.state_file_dir)
 
-    config_file = args.check_config_dir + '/configurations.json'
+    config_file = os.path.join(args.check_config_dir, 'configurations.json')
     if not os.path.isfile(path=config_file):
         sys.stderr.write(
             f"expected check config file {config_file} not exists\n"
