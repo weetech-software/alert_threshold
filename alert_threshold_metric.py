@@ -246,7 +246,7 @@ def main() -> None:
     # read configuration file and then rearrange configuration object
     is_read_parse_config_ok, configs = read_parse_config(
         logger=logger,
-        config_file=f"{args.check_config_dir}/configurations.json"
+        config_file=os.path.join(args.check_config_dir, 'configurations.json')
     )
     if not is_read_parse_config_ok:
         sys.exit(status=1)
